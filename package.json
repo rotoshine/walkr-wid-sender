@@ -1,0 +1,12 @@
+{
+  "name": "",
+  "version": "",
+  "dependencies": {
+    "async": "^2.0.0-rc.3",
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "express-hbs": "^0.8.4",
+    "handlebars": "^4.0.5",
+    "request": "^2.70.0"
+  }
+}
