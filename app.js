@@ -48,24 +48,23 @@ app.post('/', (req, res) => {
             try{
               let resultJSON = JSON.parse(body);
               if(resultJSON.success){
-                resultJSON.push(`${targetWid} ===> 성공`);
+                results.push(`${targetWid} ===> 성공`);
               }else{
                 let errorType = resultJSON.error_type;
                 if(errorType === 1){
-                  resultJSON.push(`${targetWid} ===> WID를 찾을 수 없습니다. 다시 확인해주세요.`);
+                  results.push(`${targetWid} ===> WID를 찾을 수 없습니다. 다시 확인해주세요.`);
                 }else if(errorType === 2){
-                  resultJSON.push(`${targetWid} ===> 친구의 WID를 찾을 수 없습니다. 다시 확인해주세요.`);
+                  results.push(`${targetWid} ===> 친구의 WID를 찾을 수 없습니다. 다시 확인해주세요.`);
                 }else if(errorType === 3){
-                  resultJSON.push(`${targetWid} ===> 해당 보상은 다른 계정에서 가져갔습니다.`);
+                  results.push(`${targetWid} ===> 해당 보상은 다른 계정에서 가져갔습니다.`);
                 }else if(errorType === 4){
-                  resultJSON.push(`${targetWid} ===> 친구가 로그인한지 48시간이 지났습니다.`);
+                  results.push(`${targetWid} ===> 친구가 로그인한지 48시간이 지났습니다.`);
                 }else if(errorType === 5){
-                  resultJSON.push(`${targetWid} ===> 본인에 의해 만들어진 리워드는 확인하실 수 없습니다.`);
+                  results.push(`${targetWid} ===> 본인에 의해 만들어진 리워드는 확인하실 수 없습니다.`);
                 }else{
-                  resultJSON.push(`${targetWid} ===> 알 수 없는 에러가 발생했습니다.`);
+                  results.push(`${targetWid} ===> 알 수 없는 에러가 발생했습니다.`);
                 }
               }
-              switch(resultJSON.errorType)
             }catch(e){
               results.push(body);
             }
@@ -75,9 +74,12 @@ app.post('/', (req, res) => {
       });
     });
 
-    console.log(`task list:${tasks.length}`);
+    console.log(`${wid} task list:${tasks.length}`);
     return async.parallel(tasks, () => {
-        return res.render('result', { results: results });
+        return res.render('result', {
+          requestCount: tasks.length,
+          results: results
+        });
     });
 
   }

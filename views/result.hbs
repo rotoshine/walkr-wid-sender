@@ -14,10 +14,11 @@
   </head>
   <body>
     <div class="container" style="margin-top:30px;">
+      <h3>{{requestCount}}건의 요청결과</h3>
       {{#each results}}
-        <div class="well">{{{this}}}</div>
+        <div class="well">{{this}}</div>
       {{/each}}
-      <a href="/">메인으로 가기</a>
+      <a href="/" style="margin-bottom:20px;">메인으로 가기</a>
     </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
