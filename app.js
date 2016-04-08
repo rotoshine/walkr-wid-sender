@@ -4,6 +4,7 @@ const async = require('async');
 const request = require('request');
 const express = require('express');
 const bodyParser = require('body-parser');
+const _ = require('lodash');
 const app = express();
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -16,13 +17,21 @@ app.get('/', (req, res) => {
   return res.render('index');
 });
 
-
 const WID_REQUEST_URL = 'http://universe.walkrgame.com/api/v1/rewards/bind_referral_reward';
 app.post('/', (req, res) => {
   let body = req.body;
 
   if(body.wid && body.targetWids){
+    const BLACK_LIST = [
+      'LD7hfjPxjys',
+      'gVTxzNDwEcz'
+    ];
+
     let wid = body.wid;
+    if(_.includes(BLACK_LIST, wid)){
+      return res.render('error');
+    }
+
     let targetWids = body.targetWids;
     let targetWidArray = targetWids.split('\r\n');
     let tasks = [];
