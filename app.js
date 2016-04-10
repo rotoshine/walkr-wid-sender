@@ -18,6 +18,15 @@ app.get('/', (req, res) => {
 });
 
 const WID_REQUEST_URL = 'http://universe.walkrgame.com/api/v1/rewards/bind_referral_reward';
+
+const ERROR_MESSAGES = {
+  1: 'WID를 찾을 수 없습니다. 다시 확인해주세요.',
+  2: '친구의 WID를 찾을 수 없습니다. 다시 확인해주세요.',
+  3: '해당 보상은 다른 계정에서 가져갔습니다.',
+  4: '친구가 로그인한지 48시간이 지났습니다.',
+  5: '본인에 의해 만들어진 리워드는 확인하실 수 없습니다.'
+};
+
 app.post('/', (req, res) => {
   let body = req.body;
 
@@ -37,41 +46,41 @@ app.post('/', (req, res) => {
     let tasks = [];
     let results = [];
     targetWidArray.forEach((targetWid)=>{
-      tasks.push(function(next){
-        return request.post(WID_REQUEST_URL, {form: {wid: wid, target_wid:targetWid}}, function(err, httpResponse, body){
-          if(err){
-            results.push({
-              type: 'ERROR',
-              message: err.message
-            });
-          }else{
-            try{
-              let resultJSON = JSON.parse(body);
-              if(resultJSON.success){
-                results.push(`${targetWid} ===> 성공`);
-              }else{
-                let errorType = resultJSON.error_type;
-                if(errorType === 1){
-                  results.push(`${targetWid} ===> WID를 찾을 수 없습니다. 다시 확인해주세요.`);
-                }else if(errorType === 2){
-                  results.push(`${targetWid} ===> 친구의 WID를 찾을 수 없습니다. 다시 확인해주세요.`);
-                }else if(errorType === 3){
-                  results.push(`${targetWid} ===> 해당 보상은 다른 계정에서 가져갔습니다.`);
-                }else if(errorType === 4){
-                  results.push(`${targetWid} ===> 친구가 로그인한지 48시간이 지났습니다.`);
-                }else if(errorType === 5){
-                  results.push(`${targetWid} ===> 본인에 의해 만들어진 리워드는 확인하실 수 없습니다.`);
+      if(targetWid !== ''){
+        tasks.push(function(next){
+          return request.post(WID_REQUEST_URL, {form: {wid: wid, target_wid:targetWid}}, (err, httpResponse, body) => {
+            if(err){
+              results.push({
+                type: 'ERROR',
+                message: err.message
+              });
+            }else{
+              try{
+                let resultJSON = JSON.parse(body);
+                let message = '';
+                if(resultJSON.success){
+                  message = '성공';
                 }else{
-                  results.push(`${targetWid} ===> 알 수 없는 에러가 발생했습니다.`);
+                  if(ERROR_MESSAGES[resultJSON.error_type]){
+                    message = ERROR_MESSAGES[resultJSON.error_type];
+                  }else{
+                    message = '알 수 없는 에러가 발생했습니다.';
+                  }
                 }
+
+                results.push({
+                  targetWid: targetWid,
+                  message: message
+                });
+              }catch(e){
+                console.log(e);
+                results.push(body);
               }
-            }catch(e){
-              results.push(body);
             }
-          }
-          return next(err);
+            return next(err);
+          });
         });
-      });
+      }
     });
 
     console.log(`${wid} task list:${tasks.length}`);
@@ -89,3 +98,4 @@ app.post('/', (req, res) => {
 
 
 app.listen(33333);
+console.log('server start.');
