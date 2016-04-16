@@ -3,6 +3,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>walker wid 입력결과</title>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -16,10 +17,15 @@
   <body>
     <div class="container" style="margin-top:30px;">
       <h3>{{requestCount}}건의 요청결과</h3>
+      <div class="well">
+        <a href="/"><i class="fa fa-home"></i> 메인으로 가기</a>
+      </div>
       {{#each results}}
         <div class="well"><code>{{targetWid}}</code> ===> {{message}}</div>
       {{/each}}
-      <a href="/" style="margin-bottom:20px;">메인으로 가기</a>
+      <div class="well" style="margin-bottom:20px;">
+        <a href="/"><i class="fa fa-home"></i> 메인으로 가기</a>
+      </div>
     </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
@@ -32,7 +38,6 @@
 
       ga('create', 'UA-49604777-6', 'auto');
       ga('send', 'pageview');
-
     </script>
   </body>
 </html>
