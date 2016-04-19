@@ -64,6 +64,7 @@ app.post('/', (req, res) => {
                   if(ERROR_MESSAGES[resultJSON.error_type]){
                     message = ERROR_MESSAGES[resultJSON.error_type];
                   }else{
+                    console.error(`wid: ${wid} -> ${targetWid} error. ${JSON.stringify(resultJSON)}`);
                     message = '알 수 없는 에러가 발생했습니다.';
                   }
                 }
@@ -84,7 +85,7 @@ app.post('/', (req, res) => {
     });
 
     console.log(`${wid} task list:${tasks.length}`);
-    return async.parallel(tasks, () => {
+    return async.parallelLimit(tasks, 10, () => {
         return res.render('result', {
           requestCount: tasks.length,
           results: results
