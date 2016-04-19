@@ -24,7 +24,8 @@ const ERROR_MESSAGES = {
   2: '친구의 WID를 찾을 수 없습니다. 다시 확인해주세요.',
   3: '해당 보상은 다른 계정에서 가져갔습니다.',
   4: '친구가 로그인한지 48시간이 지났습니다.',
-  5: '본인에 의해 만들어진 리워드는 확인하실 수 없습니다.'
+  5: '본인에 의해 만들어진 리워드는 확인하실 수 없습니다.',
+  6: '시간당 5 리워드만 획득할 수 있습니다. 잠시 후 다시 방문하세요.'
 };
 
 app.post('/', (req, res) => {
@@ -45,7 +46,7 @@ app.post('/', (req, res) => {
     let targetWidArray = targetWids.split('\r\n');
     let tasks = [];
     let results = [];
-    console.log(`wid ${wid} request. target wids: ${targetwids}`);
+    console.log(`wid ${wid} request. target wids: ${targetWids}`);
     targetWidArray.forEach((targetWid)=>{
       if(targetWid !== '' && targetWid.length === 11){
         tasks.push(function(next){
