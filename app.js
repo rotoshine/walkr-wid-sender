@@ -46,10 +46,13 @@ app.post('/', (req, res) => {
     let targetWidArray = targetWids.split('\r\n');
     let tasks = [];
     let results = [];
+    let alreadyPushedWorkWid = {};
     console.log(`wid ${wid} request. target wids: ${targetWids}`);
-    targetWidArray.forEach((targetWid)=>{
-      if(targetWid !== '' && targetWid.length === 11){
+    targetWidArray.forEach((targetWid)=>{      
+      if(targetWid !== '' && targetWid.length === 11 && !alreadyPushedWorkWid.hasOwnProperty(targetWid)){
+        alreadyPushedWorkWid[targetWid] = targetWid;
         tasks.push(function(next){
+          console.log(alreadyPushedWorkWid);
           return request.post(WID_REQUEST_URL, {form: {wid: wid, target_wid:targetWid}}, (err, httpResponse, body) => {
             if(err){
               results.push({
