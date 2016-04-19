@@ -45,8 +45,9 @@ app.post('/', (req, res) => {
     let targetWidArray = targetWids.split('\r\n');
     let tasks = [];
     let results = [];
+    console.log(`wid ${wid} request. target wids: ${targetwids}`);
     targetWidArray.forEach((targetWid)=>{
-      if(targetWid !== ''){
+      if(targetWid !== '' && targetWid.length === 11){
         tasks.push(function(next){
           return request.post(WID_REQUEST_URL, {form: {wid: wid, target_wid:targetWid}}, (err, httpResponse, body) => {
             if(err){
